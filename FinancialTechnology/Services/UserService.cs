@@ -26,10 +26,9 @@ namespace FinancialTechnology.Services
         }
 
         /// <summary>
-        /// Insert a new User in the database
+        /// Log in to the APP
         /// </summary>
-        /// <param name="account">User to insert</param>
-        /// <returns>User Id added</returns>
+        /// <returns>Token authenticator</returns>
         public Response<string> Login()
         {
             var response = new Response<string>();
