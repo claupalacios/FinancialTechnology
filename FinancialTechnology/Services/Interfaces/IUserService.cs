@@ -6,5 +6,6 @@ namespace FinancialTechnology.Services.Interfaces
     public interface IUserService
     {
         public Response<int> AddUser(UserDto user);
+        public Response<string> Login();
     }
 }

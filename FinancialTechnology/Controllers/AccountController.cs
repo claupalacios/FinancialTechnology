@@ -1,12 +1,14 @@
 ﻿using FinancialTechnology.Dtos;
 using FinancialTechnology.Models;
 using FinancialTechnology.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialTechnology.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;

@@ -37,13 +37,19 @@ namespace FinancialTechnology.Repositories
 
         public decimal? WithdrawFromAccount(int accountId, decimal amount)
         {
-            var accountToDeposit = _context.Account.Find(accountId);
-            if (accountToDeposit != null)
+            var accountToWithdraw = _context.Account.Find(accountId);
+            if (accountToWithdraw != null)
             {
-                accountToDeposit.Balance -= amount;
-
-                _context.SaveChanges();
-                return accountToDeposit.Balance;
+                if (accountToWithdraw.Balance >= amount)
+                {
+                    accountToWithdraw.Balance -= amount;
+                    _context.SaveChanges();
+                    return accountToWithdraw.Balance;
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             return null;

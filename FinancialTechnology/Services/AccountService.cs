@@ -9,12 +9,14 @@ namespace FinancialTechnology.Services
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<AccountService> _logger;
 
-        public AccountService(IAccountRepository accountRepository, IMapper mapper, ILogger<AccountService> logger)
+        public AccountService(IAccountRepository accountRepository, IUserRepository userRepository, IMapper mapper, ILogger<AccountService> logger)
         {
             _accountRepository = accountRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -32,7 +34,23 @@ namespace FinancialTechnology.Services
             {
                 _logger.LogInformation("AccountService - Adding new account");
 
+                if (!Enum.IsDefined(typeof(AccountType), account.AccountType))
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Invalid account type. The type must be 'Saving', or 'Checking'.";
+                }
+
+                var userAccount = _userRepository.GetUserById(account.OwnerId);
+
+                if (userAccount == null)
+                {
+                    response.Message = $"Owner Id {account.OwnerId} is incorrect.";
+                    return response;
+                }
+
                 var accountToAdd = _mapper.Map<Account>(account);
+                accountToAdd.Owner = userAccount;
+
                 var accountIdAdded = _accountRepository.AddAccount(accountToAdd);
 
                 response.Data = accountIdAdded;
@@ -104,7 +122,7 @@ namespace FinancialTechnology.Services
                 }
                 else
                 {
-                    response.Message = $"Account: {accountId} could not be updated.";
+                    response.Message = $"Could not withdraw from account: {accountId}.";
                 }
             }
             catch (Exception ex)

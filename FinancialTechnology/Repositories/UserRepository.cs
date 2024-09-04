@@ -21,5 +21,10 @@ namespace FinancialTechnology.Repositories
             _context.SaveChanges();
             return user.Id;
         }
+
+        public User GetUserById(int userId)
+        {
+            return _context.User.Where(user => user.Id == userId).FirstOrDefault();
+        }
     }
 }

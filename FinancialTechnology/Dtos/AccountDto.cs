@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FinancialTechnology.Dtos
+﻿namespace FinancialTechnology.Dtos
 {
     public class AccountDto
     {
-        [Required]
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public TaskStatus Status { get; set; }
+        public int OwnerId { get; set; }
+        public int AccountNumber { get; set; }
+        public AccountType AccountType { get; set; }
+        public decimal Balance { get; set; }
     }
 }
